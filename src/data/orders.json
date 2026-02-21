@@ -1,0 +1,23 @@
+[
+  {
+    "id": "o1",
+    "customer": "Demo User",
+    "total": 154.49,
+    "status": "processing",
+    "createdAt": "2026-02-10T00:00:00.000Z"
+  },
+  {
+    "id": "o2",
+    "customer": "Taylor Jones",
+    "total": 89.5,
+    "status": "completed",
+    "createdAt": "2026-02-15T00:00:00.000Z"
+  },
+  {
+    "id": "o3",
+    "customer": "Jordan Lee",
+    "total": 319.99,
+    "status": "pending",
+    "createdAt": "2026-02-19T00:00:00.000Z"
+  }
+]

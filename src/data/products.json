@@ -1,0 +1,134 @@
+[
+  {
+    "id": "p1",
+    "title": "Wireless Headphones",
+    "description": "Noise-cancelling over-ear headphones with 30-hour battery life.",
+    "price": 129.99,
+    "category": "electronics",
+    "images": ["https://picsum.photos/seed/headphones/800/600", "https://picsum.photos/seed/headphones2/800/600"],
+    "stock": 20,
+    "rating": 4.5,
+    "createdAt": "2026-02-01T00:00:00.000Z"
+  },
+  {
+    "id": "p2",
+    "title": "Classic Cotton T-Shirt",
+    "description": "Breathable everyday t-shirt with a regular fit.",
+    "price": 24.5,
+    "category": "fashion",
+    "images": ["https://picsum.photos/seed/shirt/800/600"],
+    "stock": 50,
+    "rating": 4.1,
+    "createdAt": "2026-01-28T00:00:00.000Z"
+  },
+  {
+    "id": "p3",
+    "title": "Smartwatch Pro",
+    "description": "Fitness tracking, GPS, and heart-rate monitoring in one sleek watch.",
+    "price": 199.0,
+    "category": "electronics",
+    "images": ["https://picsum.photos/seed/smartwatch/800/600"],
+    "stock": 15,
+    "rating": 4.4,
+    "createdAt": "2026-02-12T00:00:00.000Z"
+  },
+  {
+    "id": "p4",
+    "title": "Organic Arabica Coffee Beans",
+    "description": "Single-origin whole beans with rich chocolate notes.",
+    "price": 18.75,
+    "category": "grocery",
+    "images": ["https://picsum.photos/seed/coffee/800/600"],
+    "stock": 80,
+    "rating": 4.8,
+    "createdAt": "2026-02-08T00:00:00.000Z"
+  },
+  {
+    "id": "p5",
+    "title": "Minimal Desk Lamp",
+    "description": "Adjustable LED desk lamp with warm and cool light modes.",
+    "price": 42.0,
+    "category": "home",
+    "images": ["https://picsum.photos/seed/lamp/800/600"],
+    "stock": 35,
+    "rating": 4.2,
+    "createdAt": "2026-01-20T00:00:00.000Z"
+  },
+  {
+    "id": "p6",
+    "title": "Hardcover Productivity Journal",
+    "description": "Structured daily planning journal for focus and reflection.",
+    "price": 16.99,
+    "category": "books",
+    "images": ["https://picsum.photos/seed/journal/800/600"],
+    "stock": 65,
+    "rating": 4.3,
+    "createdAt": "2026-02-05T00:00:00.000Z"
+  },
+  {
+    "id": "p7",
+    "title": "Trail Running Shoes",
+    "description": "Lightweight shoes with strong grip for outdoor terrain.",
+    "price": 89.5,
+    "category": "fashion",
+    "images": ["https://picsum.photos/seed/shoes/800/600"],
+    "stock": 27,
+    "rating": 4.0,
+    "createdAt": "2026-01-30T00:00:00.000Z"
+  },
+  {
+    "id": "p8",
+    "title": "Portable Blender",
+    "description": "USB rechargeable blender for smoothies on the go.",
+    "price": 34.99,
+    "category": "grocery",
+    "images": ["https://picsum.photos/seed/blender/800/600"],
+    "stock": 40,
+    "rating": 4.1,
+    "createdAt": "2026-02-14T00:00:00.000Z"
+  },
+  {
+    "id": "p9",
+    "title": "4K Monitor 27-inch",
+    "description": "Crisp UHD display with HDR support and ultra-thin bezels.",
+    "price": 319.99,
+    "category": "electronics",
+    "images": ["https://picsum.photos/seed/monitor/800/600"],
+    "stock": 12,
+    "rating": 4.6,
+    "createdAt": "2026-02-03T00:00:00.000Z"
+  },
+  {
+    "id": "p10",
+    "title": "Linen Bedding Set",
+    "description": "Breathable king-size bedding set with soft stone-washed finish.",
+    "price": 149.0,
+    "category": "home",
+    "images": ["https://picsum.photos/seed/bedding/800/600"],
+    "stock": 18,
+    "rating": 4.7,
+    "createdAt": "2026-01-18T00:00:00.000Z"
+  },
+  {
+    "id": "p11",
+    "title": "Beginner Guitar Guide",
+    "description": "A complete step-by-step guide to learning guitar basics.",
+    "price": 21.25,
+    "category": "books",
+    "images": ["https://picsum.photos/seed/guitarbook/800/600"],
+    "stock": 44,
+    "rating": 3.9,
+    "createdAt": "2026-01-25T00:00:00.000Z"
+  },
+  {
+    "id": "p12",
+    "title": "Ceramic Water Bottle",
+    "description": "Insulated reusable bottle that keeps drinks cold for 24 hours.",
+    "price": 28.0,
+    "category": "home",
+    "images": ["https://picsum.photos/seed/bottle/800/600"],
+    "stock": 53,
+    "rating": 4.4,
+    "createdAt": "2026-02-11T00:00:00.000Z"
+  }
+]
