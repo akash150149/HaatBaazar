@@ -3,8 +3,8 @@ import ProductCard from "../../../components/product/ProductCard";
 
 export default function FeaturedProductsSection({ products = [] }) {
   return (
-    <section className="space-y-4">
-      <div className="flex items-center justify-between">
+    <section className="space-y-5">
+      <div className="flex items-end justify-between gap-4">
         <h2 className="text-2xl font-bold text-slate-900">Featured Products</h2>
         <Link to="/products" className="text-sm font-semibold text-brand-700 hover:text-brand-500">
           View all

@@ -21,11 +21,11 @@ const testimonials = [
 
 export default function TestimonialsSection() {
   return (
-    <section className="space-y-4">
+    <section className="space-y-5">
       <h2 className="text-2xl font-bold text-slate-900">What teams say</h2>
       <div className="grid gap-4 md:grid-cols-3">
         {testimonials.map((item) => (
-          <article key={item.id} className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <article key={item.id} className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
             <p className="text-sm leading-relaxed text-slate-700">"{item.quote}"</p>
             <p className="mt-4 font-semibold text-slate-900">{item.name}</p>
             <p className="text-xs uppercase tracking-wider text-slate-500">{item.role}</p>

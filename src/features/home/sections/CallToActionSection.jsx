@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function CallToActionSection() {
   return (
-    <section className="rounded-3xl bg-slate-900 px-6 py-10 text-white md:px-10">
+    <section className="rounded-3xl bg-gradient-to-r from-slate-900 via-slate-800 to-brand-900 px-6 py-10 text-white md:px-10">
       <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div>
           <h2 className="text-2xl font-bold">Ready to launch your storefront?</h2>

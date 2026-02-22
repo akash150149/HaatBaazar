@@ -4,9 +4,9 @@ import Footer from "./Footer";
 
 export default function AppLayout() {
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
+    <div className="min-h-screen text-slate-900">
       <Header />
-      <main className="mx-auto w-full max-w-7xl px-4 py-6">
+      <main className="mx-auto w-full max-w-7xl px-4 py-5 sm:px-6 sm:py-8 lg:px-8">
         <Outlet />
       </main>
       <Footer />

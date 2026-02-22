@@ -13,7 +13,7 @@ export default function ProductFilters({
   onReset
 }) {
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
+    <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-6">
         <div className="lg:col-span-2">
           <label htmlFor="search" className="mb-1 block text-xs font-semibold uppercase text-slate-500">Search</label>
@@ -23,7 +23,7 @@ export default function ProductFilters({
             value={search}
             onChange={(event) => onSearchChange(event.target.value)}
             placeholder="Search title or description"
-            className="w-full rounded-md border border-slate-300 px-3 py-2"
+            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
           />
         </div>
         <div>
@@ -32,7 +32,7 @@ export default function ProductFilters({
             id="category"
             value={category}
             onChange={(event) => onCategoryChange(event.target.value)}
-            className="w-full rounded-md border border-slate-300 px-3 py-2"
+            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
           >
             <option value="all">All</option>
             {categories.map((item) => (
@@ -48,7 +48,7 @@ export default function ProductFilters({
             min="0"
             value={minPrice}
             onChange={(event) => onMinPriceChange(event.target.value)}
-            className="w-full rounded-md border border-slate-300 px-3 py-2"
+            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
           />
         </div>
         <div>
@@ -59,7 +59,7 @@ export default function ProductFilters({
             min="0"
             value={maxPrice}
             onChange={(event) => onMaxPriceChange(event.target.value)}
-            className="w-full rounded-md border border-slate-300 px-3 py-2"
+            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
           />
         </div>
         <div>
@@ -68,7 +68,7 @@ export default function ProductFilters({
             id="sortBy"
             value={sortBy}
             onChange={(event) => onSortChange(event.target.value)}
-            className="w-full rounded-md border border-slate-300 px-3 py-2"
+            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
           >
             <option value="newest">Newest</option>
             <option value="price-asc">Price: Low to High</option>
@@ -77,7 +77,7 @@ export default function ProductFilters({
           </select>
         </div>
       </div>
-      <div className="mt-3 flex justify-end">
+      <div className="mt-4 flex justify-end">
         <button
           type="button"
           onClick={onReset}

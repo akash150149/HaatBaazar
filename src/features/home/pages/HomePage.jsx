@@ -21,7 +21,7 @@ export default function HomePage() {
   if (error) return <p className="rounded-md bg-red-50 p-4 text-red-700">{error}</p>;
 
   return (
-    <section className="space-y-10">
+    <section className="space-y-8 sm:space-y-10 lg:space-y-12">
       <SeoHelmet title="Home" description="Modern scalable ecommerce storefront" />
       <HeroSection />
       <FeaturedProductsSection products={featuredProducts} />

@@ -35,13 +35,13 @@ export default function ProductDetailsPage() {
     <section className="space-y-8">
       <SeoHelmet title={product.title} description={product.description} />
       <div className="grid gap-6 md:grid-cols-2">
-        <img src={product.images[0]} alt={product.title} className="h-80 w-full rounded-lg object-cover" />
-        <div className="space-y-4">
-          <h1 className="text-3xl font-semibold">{product.title}</h1>
+        <img src={product.images[0]} alt={product.title} className="h-72 w-full rounded-xl object-cover sm:h-80" />
+        <div className="space-y-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+          <h1 className="text-3xl font-semibold sm:text-4xl">{product.title}</h1>
           <p className="text-slate-600">{product.description}</p>
           <p className="text-2xl text-brand-700">{formatCurrency(product.price)}</p>
           <p className="text-sm text-slate-600">Rating: {product.rating.toFixed(1)} / 5</p>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <input
               type="number"
               min="1"

@@ -67,10 +67,10 @@ export default function ProductsPage() {
   if (error) return <p className="rounded-md bg-red-50 p-4 text-red-700">{error}</p>;
 
   return (
-    <section className="space-y-5">
+    <section className="space-y-5 sm:space-y-6">
       <SeoHelmet title="Products" description="Browse, search, and filter products" />
       <div>
-        <h1 className="text-3xl font-bold text-slate-900">Products</h1>
+        <h1 className="text-3xl font-bold text-slate-900 sm:text-4xl">Products</h1>
         <p className="text-slate-600">Discover products across dynamic categories.</p>
       </div>
 
@@ -89,7 +89,7 @@ export default function ProductsPage() {
         onReset={resetFilters}
       />
 
-      <div className="flex items-center justify-between text-sm text-slate-600">
+      <div className="flex flex-col gap-1 text-sm text-slate-600 sm:flex-row sm:items-center sm:justify-between">
         <p>{queriedProducts.length} result(s) found</p>
         <p>Page {currentPage} of {totalPages}</p>
       </div>
