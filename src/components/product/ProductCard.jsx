@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { formatCurrency } from "../../utils/formatCurrency";
+import { getFallbackImage, withImageFallback } from "../../utils/image";
 
 export default function ProductCard({ product }) {
   return (
@@ -9,8 +10,9 @@ export default function ProductCard({ product }) {
     >
       <div className="overflow-hidden rounded-lg">
         <img
-          src={product.images[0]}
+          src={product.images?.[0] || getFallbackImage()}
           alt={product.title}
+          onError={withImageFallback}
           className="mb-3 h-44 w-full object-cover transition duration-300 group-hover:scale-105 sm:h-48"
         />
       </div>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { isLikelyImageUrl, normalizeImageUrl } from "../../../utils/image";
 
 const EMPTY_FORM = {
   title: "",
@@ -49,6 +50,12 @@ export default function ProductForm({ editingProduct, onSave, onCancel }) {
       return;
     }
 
+    const normalizedImageUrl = normalizeImageUrl(form.imageUrl);
+    if (form.imageUrl.trim() && !isLikelyImageUrl(normalizedImageUrl)) {
+      setError("Use a direct image URL (.jpg/.png/.webp) or a cloud image link.");
+      return;
+    }
+
     try {
       await onSave({
         title: form.title.trim(),
@@ -57,7 +64,7 @@ export default function ProductForm({ editingProduct, onSave, onCancel }) {
         category: form.category.trim().toLowerCase(),
         stock: Number(form.stock || 0),
         rating: Number(form.rating || 0),
-        images: form.imageUrl.trim() ? [form.imageUrl.trim()] : undefined
+        images: normalizedImageUrl ? [normalizedImageUrl] : undefined
       });
     } catch {
       setError("Unable to save product. Please try again.");
@@ -116,7 +123,7 @@ export default function ProductForm({ editingProduct, onSave, onCancel }) {
           type="url"
           value={form.imageUrl}
           onChange={(event) => onChange("imageUrl", event.target.value)}
-          placeholder="Image URL"
+          placeholder="Direct image URL (not Google search page)"
           className="rounded-md border border-slate-300 px-3 py-2"
         />
       </div>

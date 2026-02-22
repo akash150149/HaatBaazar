@@ -4,6 +4,7 @@ import SeoHelmet from "../../../seo/SeoHelmet";
 import Spinner from "../../../components/layout/Spinner";
 import { useCart, useProducts } from "../../../context";
 import { formatCurrency } from "../../../utils/formatCurrency";
+import { getFallbackImage, withImageFallback } from "../../../utils/image";
 import ProductCard from "../../../components/product/ProductCard";
 
 export default function ProductDetailsPage() {
@@ -35,7 +36,12 @@ export default function ProductDetailsPage() {
     <section className="space-y-8">
       <SeoHelmet title={product.title} description={product.description} />
       <div className="grid gap-6 md:grid-cols-2">
-        <img src={product.images[0]} alt={product.title} className="h-72 w-full rounded-xl object-cover sm:h-80" />
+        <img
+          src={product.images?.[0] || getFallbackImage()}
+          alt={product.title}
+          onError={withImageFallback}
+          className="h-72 w-full rounded-xl object-cover sm:h-80"
+        />
         <div className="space-y-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
           <h1 className="text-3xl font-semibold sm:text-4xl">{product.title}</h1>
           <p className="text-slate-600">{product.description}</p>

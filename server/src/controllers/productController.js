@@ -1,5 +1,15 @@
 import Product from "../models/Product.js";
 
+const FALLBACK_IMAGE = "https://placehold.co/800x600?text=No+Image";
+
+function normalizeImageUrls(images) {
+  if (!Array.isArray(images)) return [FALLBACK_IMAGE];
+  const sanitized = images
+    .map((item) => String(item || "").trim())
+    .filter((item) => /^https?:\/\//i.test(item));
+  return sanitized.length > 0 ? sanitized : [FALLBACK_IMAGE];
+}
+
 export async function listProducts(req, res) {
   const products = await Product.find().sort({ createdAt: -1 });
   return res.json(products);
@@ -24,7 +34,7 @@ export async function createProduct(req, res) {
     description: payload.description || "",
     price: Number(payload.price || 0),
     category: payload.category,
-    images: Array.isArray(payload.images) ? payload.images : [],
+    images: normalizeImageUrls(payload.images),
     stock: Number(payload.stock || 0),
     rating: Number(payload.rating || 0)
   });
@@ -39,6 +49,7 @@ export async function updateProduct(req, res) {
     req.params.id,
     {
       ...payload,
+      ...(payload.images !== undefined ? { images: normalizeImageUrls(payload.images) } : {}),
       ...(payload.price !== undefined ? { price: Number(payload.price) } : {}),
       ...(payload.stock !== undefined ? { stock: Number(payload.stock) } : {}),
       ...(payload.rating !== undefined ? { rating: Number(payload.rating) } : {})
