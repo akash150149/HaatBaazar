@@ -1,4 +1,5 @@
 import Product from "../models/Product.js";
+import cloudinary from "../config/cloudinary.js";
 
 const FALLBACK_IMAGE = "https://placehold.co/800x600?text=No+Image";
 
@@ -70,4 +71,24 @@ export async function deleteProduct(req, res) {
     return res.status(404).json({ message: "Product not found" });
   }
   return res.json({ message: "Product deleted" });
+}
+
+export async function uploadProductImage(req, res) {
+  if (!req.file) {
+    return res.status(400).json({ message: "Image file is required" });
+  }
+
+  if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
+    return res.status(500).json({ message: "Cloudinary is not configured" });
+  }
+
+  const dataUri = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
+  const uploaded = await cloudinary.uploader.upload(dataUri, {
+    folder: "shop/products",
+    resource_type: "image"
+  });
+
+  return res.status(201).json({
+    url: uploaded.secure_url
+  });
 }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { isLikelyImageUrl, normalizeImageUrl } from "../../../utils/image";
+import { uploadProductImage } from "../../../services/productService";
 
 const EMPTY_FORM = {
   title: "",
@@ -27,14 +28,39 @@ function toFormValue(product) {
 export default function ProductForm({ editingProduct, onSave, onCancel }) {
   const [form, setForm] = useState(EMPTY_FORM);
   const [error, setError] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadMessage, setUploadMessage] = useState("");
 
   useEffect(() => {
     setForm(toFormValue(editingProduct));
     setError("");
+    setSelectedFile(null);
+    setUploadMessage("");
   }, [editingProduct]);
 
   const onChange = (key, value) => {
     setForm((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const handleFileUpload = async () => {
+    setError("");
+    setUploadMessage("");
+    if (!selectedFile) {
+      setError("Please choose an image file first.");
+      return;
+    }
+
+    try {
+      setUploading(true);
+      const data = await uploadProductImage(selectedFile);
+      onChange("imageUrl", data.url);
+      setUploadMessage("Image uploaded successfully.");
+    } catch (err) {
+      setError(err?.response?.data?.message || "Image upload failed.");
+    } finally {
+      setUploading(false);
+    }
   };
 
   const handleSubmit = async (event) => {
@@ -126,6 +152,26 @@ export default function ProductForm({ editingProduct, onSave, onCancel }) {
           placeholder="Direct image URL (not Google search page)"
           className="rounded-md border border-slate-300 px-3 py-2"
         />
+      </div>
+      <div className="rounded-md border border-slate-200 bg-slate-50 p-3">
+        <p className="mb-2 text-sm font-medium text-slate-700">Or upload image from your device</p>
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(event) => setSelectedFile(event.target.files?.[0] || null)}
+            className="w-full text-sm text-slate-600"
+          />
+          <button
+            type="button"
+            onClick={handleFileUpload}
+            disabled={uploading}
+            className="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {uploading ? "Uploading..." : "Upload Image"}
+          </button>
+        </div>
+        {uploadMessage && <p className="mt-2 text-sm text-emerald-700">{uploadMessage}</p>}
       </div>
       <textarea
         value={form.description}

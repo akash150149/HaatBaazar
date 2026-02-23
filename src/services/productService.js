@@ -23,3 +23,14 @@ export async function editProduct(productId, payload) {
 export async function removeProduct(productId) {
   await apiClient.delete(`/products/${productId}`);
 }
+
+export async function uploadProductImage(file) {
+  const formData = new FormData();
+  formData.append("image", file);
+  const { data } = await apiClient.post("/products/upload-image", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data"
+    }
+  });
+  return data;
+}
