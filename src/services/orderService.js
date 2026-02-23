@@ -9,3 +9,13 @@ export async function createOrder(payload) {
   const { data } = await apiClient.post("/orders", payload);
   return data;
 }
+
+export async function createRazorpayOrder(payload) {
+  const { data } = await apiClient.post("/orders/payment/razorpay/order", payload);
+  return data;
+}
+
+export async function verifyRazorpayPayment(payload) {
+  const { data } = await apiClient.post("/orders/payment/razorpay/verify", payload);
+  return data;
+}

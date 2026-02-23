@@ -13,8 +13,7 @@ function readStoredOrder() {
 }
 
 function formatPaymentMethod(method) {
-  if (method === "card") return "Credit / Debit Card";
-  if (method === "upi") return "UPI";
+  if (method === "online") return "Online Payment (Razorpay)";
   if (method === "cod") return "Cash on Delivery";
   return "Unknown";
 }
@@ -54,6 +53,7 @@ export default function OrderConfirmationPage() {
         <p><strong>Order ID:</strong> {order.orderId}</p>
         <p><strong>Placed At:</strong> {formatDate(order.placedAt || order.createdAt)}</p>
         <p><strong>Payment:</strong> {formatPaymentMethod(order.paymentMethod)}</p>
+        <p><strong>Payment Status:</strong> {String(order.paymentStatus || "pending").toUpperCase()}</p>
         <p><strong>Items:</strong> {order.itemsCount}</p>
         <p><strong>Total:</strong> {formatCurrency(order.subtotal)}</p>
         <p><strong>Shipping:</strong> {order.shippingAddress}</p>

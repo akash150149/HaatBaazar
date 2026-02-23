@@ -4,6 +4,12 @@ export function notFoundHandler(req, res) {
 
 export function errorHandler(err, req, res, next) {
   console.error(err);
+  if (err?.code === "ETIMEDOUT") {
+    return res.status(503).json({ message: "Upstream service timed out. Please retry." });
+  }
+  if (err?.name === "AggregateError" && err?.code === "ETIMEDOUT") {
+    return res.status(503).json({ message: "Upstream service timed out. Please retry." });
+  }
   if (err?.name === "MulterError") {
     if (err.code === "LIMIT_FILE_SIZE") {
       return res.status(400).json({ message: "Image size must be 5MB or less" });

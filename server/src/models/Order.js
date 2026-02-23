@@ -18,7 +18,9 @@ const orderSchema = new mongoose.Schema(
     itemsCount: { type: Number, required: true, min: 1 },
     subtotal: { type: Number, required: true, min: 0 },
     shippingAddress: { type: String, required: true, trim: true },
-    paymentMethod: { type: String, enum: ["card", "upi", "cod"], required: true },
+    paymentMethod: { type: String, enum: ["online", "cod"], required: true },
+    paymentStatus: { type: String, enum: ["pending", "paid", "failed"], default: "pending" },
+    paymentMeta: { type: Object, default: {} },
     status: { type: String, enum: ["pending", "processing", "completed"], default: "pending" }
   },
   { timestamps: true }

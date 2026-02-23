@@ -1,5 +1,8 @@
 import Product from "../models/Product.js";
-import cloudinary from "../config/cloudinary.js";
+import { getCloudinary } from "../config/cloudinary.js";
+import path from "node:path";
+import fs from "node:fs/promises";
+import { randomUUID } from "node:crypto";
 
 const FALLBACK_IMAGE = "https://placehold.co/800x600?text=No+Image";
 
@@ -9,6 +12,38 @@ function normalizeImageUrls(images) {
     .map((item) => String(item || "").trim())
     .filter((item) => /^https?:\/\//i.test(item));
   return sanitized.length > 0 ? sanitized : [FALLBACK_IMAGE];
+}
+
+function uploadBufferToCloudinary(cloudinary, buffer, options) {
+  return new Promise((resolve, reject) => {
+    const stream = cloudinary.uploader.upload_stream(options, (error, result) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve(result);
+    });
+    stream.end(buffer);
+  });
+}
+
+function extensionFromMime(mime = "") {
+  if (mime === "image/jpeg") return "jpg";
+  if (mime === "image/png") return "png";
+  if (mime === "image/webp") return "webp";
+  if (mime === "image/gif") return "gif";
+  return "bin";
+}
+
+async function saveImageLocally(req) {
+  const ext = extensionFromMime(req.file.mimetype);
+  const fileName = `${Date.now()}-${randomUUID()}.${ext}`;
+  const uploadsDir = path.resolve(process.cwd(), "uploads");
+  await fs.mkdir(uploadsDir, { recursive: true });
+  const filePath = path.join(uploadsDir, fileName);
+  await fs.writeFile(filePath, req.file.buffer);
+
+  return `${req.protocol}://${req.get("host")}/uploads/${fileName}`;
 }
 
 export async function listProducts(req, res) {
@@ -82,11 +117,36 @@ export async function uploadProductImage(req, res) {
     return res.status(500).json({ message: "Cloudinary is not configured" });
   }
 
-  const dataUri = `data:${req.file.mimetype};base64,${req.file.buffer.toString("base64")}`;
-  const uploaded = await cloudinary.uploader.upload(dataUri, {
-    folder: "shop/products",
-    resource_type: "image"
-  });
+  if (!req.file.buffer || req.file.size <= 0) {
+    return res.status(400).json({ message: "Uploaded image is empty" });
+  }
+
+  if (!req.file.mimetype?.startsWith("image/")) {
+    return res.status(400).json({ message: "Only image files are allowed" });
+  }
+
+  let uploaded;
+  try {
+    const cloudinary = getCloudinary();
+    uploaded = await uploadBufferToCloudinary(cloudinary, req.file.buffer, {
+      folder: "shop/products",
+      resource_type: "image"
+    });
+  } catch (err) {
+    const providerMessage = err?.error?.message || err?.message || "Cloudinary upload failed";
+    if (err?.code === "ETIMEDOUT") {
+      const localUrl = await saveImageLocally(req);
+      return res.status(201).json({
+        url: localUrl,
+        storage: "local-fallback",
+        warning: "Cloudinary unreachable, saved locally instead."
+      });
+    }
+
+    const wrapped = new Error(`Cloudinary upload failed: ${providerMessage}`);
+    wrapped.statusCode = err?.http_code || 502;
+    throw wrapped;
+  }
 
   return res.status(201).json({
     url: uploaded.secure_url
