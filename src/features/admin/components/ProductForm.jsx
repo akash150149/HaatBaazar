@@ -56,6 +56,7 @@ export default function ProductForm({ editingProduct, onSave, onCancel }) {
       const data = await uploadProductImage(selectedFile);
       onChange("imageUrl", data.url);
       setUploadMessage("Image uploaded successfully.");
+      setSelectedFile(null);
     } catch (err) {
       setError(err?.response?.data?.message || "Image upload failed.");
     } finally {
@@ -76,13 +77,24 @@ export default function ProductForm({ editingProduct, onSave, onCancel }) {
       return;
     }
 
-    const normalizedImageUrl = normalizeImageUrl(form.imageUrl);
+    let normalizedImageUrl = normalizeImageUrl(form.imageUrl);
     if (form.imageUrl.trim() && !isLikelyImageUrl(normalizedImageUrl)) {
       setError("Use a direct image URL (.jpg/.png/.webp) or a cloud image link.");
       return;
     }
 
     try {
+      if (selectedFile) {
+        setUploading(true);
+        const uploaded = await uploadProductImage(selectedFile);
+        normalizedImageUrl = normalizeImageUrl(uploaded?.url);
+        if (!normalizedImageUrl) {
+          setError("Image upload succeeded but returned URL was invalid.");
+          return;
+        }
+        setUploadMessage("Image uploaded successfully.");
+      }
+
       await onSave({
         title: form.title.trim(),
         description: form.description.trim(),
@@ -92,8 +104,11 @@ export default function ProductForm({ editingProduct, onSave, onCancel }) {
         rating: Number(form.rating || 0),
         images: normalizedImageUrl ? [normalizedImageUrl] : undefined
       });
+      setSelectedFile(null);
     } catch {
       setError("Unable to save product. Please try again.");
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -171,6 +186,9 @@ export default function ProductForm({ editingProduct, onSave, onCancel }) {
             {uploading ? "Uploading..." : "Upload Image"}
           </button>
         </div>
+        <p className="mt-2 text-xs text-slate-500">
+          Tip: selecting a file and clicking Add/Update Product will upload automatically.
+        </p>
         {uploadMessage && <p className="mt-2 text-sm text-emerald-700">{uploadMessage}</p>}
       </div>
       <textarea
@@ -183,7 +201,11 @@ export default function ProductForm({ editingProduct, onSave, onCancel }) {
       {error && <p className="text-sm text-red-600">{error}</p>}
 
       <div className="flex gap-2">
-        <button type="submit" className="rounded-md bg-brand-700 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-500">
+        <button
+          type="submit"
+          disabled={uploading}
+          className="rounded-md bg-brand-700 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-500 disabled:cursor-not-allowed disabled:opacity-60"
+        >
           {editingProduct ? "Update Product" : "Add Product"}
         </button>
         {editingProduct && (
