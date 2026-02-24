@@ -3,43 +3,56 @@ import brandConfig from "../../../config/brandConfig";
 
 export default function HeroSection() {
   return (
-    <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-950 via-brand-900 to-brand-700 px-5 py-12 text-white shadow-xl sm:px-8 sm:py-16 lg:px-12">
-      <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-white/10 blur-3xl" />
-      <div className="absolute -bottom-20 left-6 h-56 w-56 rounded-full bg-emerald-200/20 blur-3xl" />
-      <div className="relative grid items-end gap-10 lg:grid-cols-2">
-        <div className="max-w-2xl space-y-5">
-          <p className="inline-flex rounded-full border border-white/30 bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-wider">
-            Scalable Commerce System
-          </p>
-          <h1 className="text-4xl font-extrabold leading-tight sm:text-5xl lg:text-6xl">
-            Build once, sell anything.
+    <section className="relative overflow-hidden rounded-[2.5rem] bg-slate-950 px-6 py-16 text-white shadow-premium sm:px-12 sm:py-24 lg:px-20">
+      {/* Background Orbs */}
+      <div className="absolute -right-20 -top-20 h-[30rem] w-[30rem] rounded-full bg-brand-500/20 blur-[120px] animate-pulse" />
+      <div className="absolute -bottom-40 -left-20 h-[25rem] w-[25rem] rounded-full bg-emerald-500/10 blur-[100px]" />
+
+      <div className="relative z-10 grid items-center gap-16 lg:grid-cols-[1.2fr_0.8fr]">
+        <div className="max-w-3xl space-y-8 text-center lg:text-left">
+          <div className="inline-flex items-center space-x-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 backdrop-blur-md">
+            <span className="h-2 w-2 animate-ping rounded-full bg-brand-400" />
+            <span className="text-xs font-bold uppercase tracking-[0.2em] text-brand-100">
+              Next-Gen Commerce
+            </span>
+          </div>
+
+          <h1 className="font-display text-5xl font-extrabold tracking-tight sm:text-7xl lg:text-8xl lg:leading-[1.1]">
+            Build <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-300 to-emerald-500">Fast.</span> <br />
+            Sell <span className="italic font-light">Global.</span>
           </h1>
-          <p className="text-base text-emerald-50 sm:text-lg">
-            {brandConfig.name} is a category-agnostic storefront foundation designed for modern brands and rapid feature growth.
+
+          <p className="max-w-xl text-lg leading-relaxed text-slate-300 sm:text-xl mx-auto lg:mx-0">
+            {brandConfig.name} provides the high-performance foundation your brand needs to scale without limits. Experience the peak of modern storefronts.
           </p>
-          <div className="flex flex-wrap gap-3">
-            <Link to="/products" className="rounded-md bg-white px-5 py-2.5 font-semibold text-brand-900 transition hover:bg-emerald-50">
-              Shop Collection
+
+          <div className="flex flex-col flex-wrap justify-center gap-4 sm:flex-row lg:justify-start">
+            <Link to="/products" className="group relative overflow-hidden rounded-full bg-brand-500 px-10 py-4 font-bold text-white transition-all hover:bg-brand-400 hover:shadow-xl hover:shadow-brand-500/20 active:scale-95">
+              <span className="relative z-10">Shop Collection</span>
             </Link>
-            <Link to="/admin" className="rounded-md border border-white/40 px-5 py-2.5 font-semibold text-white transition hover:bg-white/10">
-              Open Admin
+            <Link to="/admin" className="rounded-full border border-white/20 bg-white/5 px-10 py-4 font-bold text-white backdrop-blur-md transition-all hover:bg-white/10 active:scale-95">
+              Admin Portal
             </Link>
           </div>
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
-          <article className="rounded-xl border border-white/20 bg-white/10 p-4 backdrop-blur">
-            <p className="text-xs uppercase tracking-wider text-emerald-100">Category Ready</p>
-            <p className="mt-2 text-2xl font-bold">Any Industry</p>
-          </article>
-          <article className="rounded-xl border border-white/20 bg-white/10 p-4 backdrop-blur">
-            <p className="text-xs uppercase tracking-wider text-emerald-100">Performance</p>
-            <p className="mt-2 text-2xl font-bold">Fast SPA UX</p>
-          </article>
-          <article className="rounded-xl border border-white/20 bg-white/10 p-4 backdrop-blur">
-            <p className="text-xs uppercase tracking-wider text-emerald-100">Backend Ready</p>
-            <p className="mt-2 text-2xl font-bold">Mongo + APIs</p>
-          </article>
+        <div className="hidden grid-cols-1 gap-4 lg:grid">
+          <div className="space-y-4">
+            {[
+              { label: "Category Ready", value: "Any Industry", color: "from-brand-500 to-emerald-400" },
+              { label: "Performance", value: "99+ Lighthouse", color: "from-emerald-400 to-cyan-400" },
+              { label: "Backend Ready", value: "Node + MongoDB", color: "from-cyan-400 to-brand-500" }
+            ].map((feature, i) => (
+              <article key={i} className="group flex flex-col justify-center rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl transition-all hover:bg-white/10">
+                <p className="text-xs font-black uppercase tracking-widest text-brand-200/60 transition-colors group-hover:text-brand-200">
+                  {feature.label}
+                </p>
+                <p className={`mt-1 text-3xl font-bold bg-gradient-to-r ${feature.color} bg-clip-text text-transparent`}>
+                  {feature.value}
+                </p>
+              </article>
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -33,45 +33,89 @@ export default function ProductDetailsPage() {
   }
 
   return (
-    <section className="space-y-8">
+    <section className="space-y-16 py-8">
       <SeoHelmet title={product.title} description={product.description} />
-      <div className="grid gap-6 md:grid-cols-2">
-        <img
-          src={product.images?.[0] || getFallbackImage()}
-          alt={product.title}
-          onError={withImageFallback}
-          className="h-72 w-full rounded-xl object-cover sm:h-80"
-        />
-        <div className="space-y-4 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-          <h1 className="text-3xl font-semibold sm:text-4xl">{product.title}</h1>
-          <p className="text-slate-600">{product.description}</p>
-          <p className="text-2xl text-brand-700">{formatCurrency(product.price)}</p>
-          <p className="text-sm text-slate-600">Rating: {product.rating.toFixed(1)} / 5</p>
-          <div className="flex flex-wrap items-center gap-3">
-            <input
-              type="number"
-              min="1"
-              value={quantity}
-              onChange={(event) => setQuantity(Math.max(1, Number(event.target.value || 1)))}
-              className="w-20 rounded-md border border-slate-300 px-3 py-2"
-            />
-            <button
-              type="button"
-              onClick={() => addToCart(product, quantity)}
-              className="rounded-md bg-brand-700 px-4 py-2 text-white"
-            >
-              Add to Cart
-            </button>
+
+      <div className="grid gap-12 lg:grid-cols-2">
+        {/* Image Gallery Mockup */}
+        <div className="group relative aspect-[4/5] overflow-hidden rounded-[2.5rem] bg-slate-100 shadow-premium">
+          <img
+            src={product.images?.[0] || getFallbackImage()}
+            alt={product.title}
+            onError={withImageFallback}
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+          />
+          <div className="absolute bottom-6 left-6 rounded-full bg-white/80 px-4 py-2 text-sm font-bold text-slate-900 backdrop-blur-md">
+            {product.rating.toFixed(1)} ★ Review Score
+          </div>
+        </div>
+
+        {/* Product Info */}
+        <div className="flex flex-col justify-center space-y-8">
+          <div className="space-y-4">
+            <span className="inline-block rounded-full bg-brand-50 px-4 py-1.5 text-xs font-black uppercase tracking-widest text-brand-600">
+              {product.category}
+            </span>
+            <h1 className="font-display text-4xl font-extrabold tracking-tight text-slate-950 sm:text-6xl">
+              {product.title}
+            </h1>
+            <p className="text-lg leading-relaxed text-slate-500">
+              {product.description}
+            </p>
+          </div>
+
+          <div className="space-y-6 rounded-[2rem] border border-slate-200 bg-white p-8 shadow-soft">
+            <div className="flex items-center justify-between">
+              <p className="font-display text-4xl font-black text-slate-950">
+                {formatCurrency(product.price)}
+              </p>
+              <span className="text-sm font-medium text-emerald-600">In Stock & Ready to Ship</span>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-4">
+              <div className="flex items-center rounded-full border border-slate-200 bg-slate-50 p-1">
+                <button
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  className="flex h-12 w-12 items-center justify-center rounded-full transition-all hover:bg-white hover:shadow-soft"
+                >
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M20 12H4" /></svg>
+                </button>
+                <span className="w-12 text-center font-bold text-slate-900">{quantity}</span>
+                <button
+                  onClick={() => setQuantity(quantity + 1)}
+                  className="flex h-12 w-12 items-center justify-center rounded-full transition-all hover:bg-white hover:shadow-soft"
+                >
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" /></svg>
+                </button>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => addToCart(product, quantity)}
+                className="flex-1 rounded-full bg-slate-950 py-4 font-bold text-white transition-all hover:bg-brand-600 hover:shadow-xl active:scale-95"
+              >
+                Add to Cart
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      <section className="space-y-3">
-        <h2 className="text-2xl font-semibold">Related Products</h2>
+      {/* Related Products */}
+      <section className="space-y-10 pt-16">
+        <div className="space-y-2 text-center lg:text-left">
+          <h2 className="font-display text-3xl font-extrabold tracking-tight text-slate-950 sm:text-4xl">
+            Complete the <span className="text-brand-600">Look.</span>
+          </h2>
+          <p className="text-slate-500">Other items you might love in {product.category}.</p>
+        </div>
+
         {relatedProducts.length === 0 ? (
-          <p className="rounded-md bg-slate-100 p-4 text-slate-600">No related products found in this category.</p>
+          <div className="rounded-[2rem] border-2 border-dashed border-slate-200 bg-white/50 p-16 text-center">
+            <p className="text-slate-400">No other items found in this category.</p>
+          </div>
         ) : (
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {relatedProducts.map((item) => (
               <ProductCard key={item.id} product={item} />
             ))}

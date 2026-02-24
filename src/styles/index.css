@@ -1,15 +1,15 @@
-@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --bg-page: #f4f7f6;
+  --bg-page: #f8fafc;
   --bg-elevated: #ffffff;
   --text-primary: #0f172a;
-  --text-muted: #475569;
-  --border-soft: #dce4e8;
+  --text-muted: #64748b;
+  --border-soft: #e2e8f0;
   color: var(--text-primary);
   background-color: var(--bg-page);
 }
@@ -19,10 +19,11 @@ body {
   min-height: 100vh;
   font-family: "Manrope", "Segoe UI", sans-serif;
   background:
-    radial-gradient(circle at 10% 0%, #d4ecdf 0%, transparent 25%),
-    radial-gradient(circle at 90% 10%, #e2f3ec 0%, transparent 35%),
+    radial-gradient(circle at 0% 0%, #f0fdf4 0%, transparent 40%),
+    radial-gradient(circle at 100% 0%, #ecfdf5 0%, transparent 40%),
     var(--bg-page);
   color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
 }
 
 * {

@@ -13,79 +13,87 @@ export default function ProductFilters({
   onReset
 }) {
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5">
-      <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-6">
-        <div className="lg:col-span-2">
-          <label htmlFor="search" className="mb-1 block text-xs font-semibold uppercase text-slate-500">Search</label>
+    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-5">
+      <div className="lg:col-span-2">
+        <label htmlFor="search" className="mb-2 block text-[10px] font-black uppercase tracking-widest text-slate-400">Search Collection</label>
+        <div className="relative">
           <input
             id="search"
             type="text"
             value={search}
             onChange={(event) => onSearchChange(event.target.value)}
-            placeholder="Search title or description"
-            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+            placeholder="Title, description, or keywords..."
+            className="w-full rounded-full border border-slate-200 bg-slate-50 px-6 py-3.5 text-sm transition-all focus:border-brand-500 focus:bg-white focus:shadow-soft outline-none"
           />
         </div>
+      </div>
+
+      <div>
+        <label htmlFor="category" className="mb-2 block text-[10px] font-black uppercase tracking-widest text-slate-400">Niche</label>
+        <select
+          id="category"
+          value={category}
+          onChange={(event) => onCategoryChange(event.target.value)}
+          className="w-full appearance-none rounded-full border border-slate-200 bg-slate-50 px-6 py-3.5 text-sm transition-all focus:border-brand-500 focus:bg-white focus:shadow-soft outline-none"
+        >
+          <option value="all">Every Category</option>
+          {categories.map((item) => (
+            <option key={item} value={item} className="capitalize">{item}</option>
+          ))}
+        </select>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4 lg:col-span-1">
         <div>
-          <label htmlFor="category" className="mb-1 block text-xs font-semibold uppercase text-slate-500">Category</label>
-          <select
-            id="category"
-            value={category}
-            onChange={(event) => onCategoryChange(event.target.value)}
-            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
-          >
-            <option value="all">All</option>
-            {categories.map((item) => (
-              <option key={item} value={item}>{item}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label htmlFor="minPrice" className="mb-1 block text-xs font-semibold uppercase text-slate-500">Min Price</label>
+          <label htmlFor="minPrice" className="mb-2 block text-[10px] font-black uppercase tracking-widest text-slate-400">Min</label>
           <input
             id="minPrice"
             type="number"
             min="0"
             value={minPrice}
             onChange={(event) => onMinPriceChange(event.target.value)}
-            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+            className="w-full rounded-full border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm transition-all focus:border-brand-500 focus:bg-white outline-none"
           />
         </div>
         <div>
-          <label htmlFor="maxPrice" className="mb-1 block text-xs font-semibold uppercase text-slate-500">Max Price</label>
+          <label htmlFor="maxPrice" className="mb-2 block text-[10px] font-black uppercase tracking-widest text-slate-400">Max</label>
           <input
             id="maxPrice"
             type="number"
             min="0"
             value={maxPrice}
             onChange={(event) => onMaxPriceChange(event.target.value)}
-            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+            className="w-full rounded-full border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm transition-all focus:border-brand-500 focus:bg-white outline-none"
           />
         </div>
-        <div>
-          <label htmlFor="sortBy" className="mb-1 block text-xs font-semibold uppercase text-slate-500">Sort By</label>
+      </div>
+
+      <div className="flex flex-col">
+        <label htmlFor="sortBy" className="mb-2 block text-[10px] font-black uppercase tracking-widest text-slate-400">Sort</label>
+        <div className="flex gap-2">
           <select
             id="sortBy"
             value={sortBy}
             onChange={(event) => onSortChange(event.target.value)}
-            className="w-full rounded-md border border-slate-300 px-3 py-2 text-sm"
+            className="w-full appearance-none rounded-full border border-slate-200 bg-slate-50 px-6 py-3.5 text-sm transition-all focus:border-brand-500 focus:bg-white outline-none"
           >
-            <option value="newest">Newest</option>
-            <option value="price-asc">Price: Low to High</option>
-            <option value="price-desc">Price: High to Low</option>
-            <option value="rating-desc">Top Rated</option>
+            <option value="newest">Latest Arrivals</option>
+            <option value="price-asc">Lowest Price</option>
+            <option value="price-desc">Highest Price</option>
+            <option value="rating-desc">Highest Rated</option>
           </select>
+          <button
+            type="button"
+            onClick={onReset}
+            className="flex h-[3.25rem] w-[3.25rem] items-center justify-center rounded-full border border-slate-200 bg-slate-50 transition-all hover:bg-slate-100 active:scale-95"
+            title="Reset Filters"
+          >
+            <svg className="h-4 w-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+          </button>
         </div>
       </div>
-      <div className="mt-4 flex justify-end">
-        <button
-          type="button"
-          onClick={onReset}
-          className="rounded-md border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50"
-        >
-          Reset Filters
-        </button>
-      </div>
-    </section>
+    </div>
   );
 }
