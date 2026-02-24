@@ -19,7 +19,8 @@ const router = createBrowserRouter([
         element: <ProtectedRoute />,
         children: [
           { path: "checkout", element: <routes.CheckoutPage /> },
-          { path: "order-confirmation", element: <routes.OrderConfirmationPage /> }
+          { path: "order-confirmation", element: <routes.OrderConfirmationPage /> },
+          { path: "my-orders", element: <routes.MyOrdersPage /> }
         ]
       },
       {

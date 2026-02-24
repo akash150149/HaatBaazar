@@ -24,7 +24,10 @@ export default function CartPage() {
         <article key={item.id} className="flex items-center justify-between rounded-lg border border-slate-200 bg-white p-4">
           <div>
             <h2 className="font-medium">{item.title}</h2>
-            <p className="text-sm text-slate-500">{formatCurrency(item.price)}</p>
+            <div className="flex gap-4">
+              <p className="text-sm text-slate-500">{formatCurrency(item.price)}</p>
+              {item.size && <p className="text-xs font-bold text-brand-600 uppercase tracking-widest bg-brand-50 px-2 rounded-md">Size: {item.size}</p>}
+            </div>
           </div>
           <div className="flex items-center gap-3">
             <input

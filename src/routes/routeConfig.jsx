@@ -10,6 +10,7 @@ const LoginPage = lazy(() => import("../features/auth/pages/LoginPage"));
 const RegisterPage = lazy(() => import("../features/auth/pages/RegisterPage"));
 const ForgotPasswordPage = lazy(() => import("../features/auth/pages/ForgotPasswordPage"));
 const AdminDashboardPage = lazy(() => import("../features/admin/pages/AdminDashboardPage"));
+const MyOrdersPage = lazy(() => import("../features/orders/pages/MyOrdersPage"));
 const NotFoundPage = lazy(() => import("../pages/NotFoundPage"));
 
 export const routes = {
@@ -23,5 +24,6 @@ export const routes = {
   RegisterPage,
   ForgotPasswordPage,
   AdminDashboardPage,
+  MyOrdersPage,
   NotFoundPage
 };

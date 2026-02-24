@@ -57,6 +57,9 @@ export default function Header() {
           <span className="rounded-full bg-slate-100 px-2 py-1 text-xs">Cart {items.length}</span>
           {isAuthenticated ? (
             <>
+              <NavLink to="/my-orders" className={linkClass}>
+                Orders
+              </NavLink>
               <span className="max-w-40 truncate text-xs text-slate-500">{user?.email}</span>
               <button
                 type="button"
@@ -97,6 +100,9 @@ export default function Header() {
             )}
             {isAuthenticated ? (
               <>
+                <NavLink to="/my-orders" className={linkClass} onClick={closeMenu}>
+                  My Orders
+                </NavLink>
                 <p className="text-xs font-medium text-slate-500">{user?.email}</p>
                 <button
                   type="button"

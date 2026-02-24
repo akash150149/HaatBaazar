@@ -12,6 +12,7 @@ export default function ProductDetailsPage() {
   const { loading, products, getProductById } = useProducts();
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
+  const [selectedSize, setSelectedSize] = useState("9");
 
   const product = useMemo(() => getProductById(productId), [getProductById, productId]);
   const relatedProducts = useMemo(() => {
@@ -72,6 +73,25 @@ export default function ProductDetailsPage() {
               <span className="text-sm font-medium text-emerald-600">In Stock & Ready to Ship</span>
             </div>
 
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-black uppercase tracking-widest text-slate-400">Select Size (US)</span>
+                <button className="text-[10px] font-bold text-brand-600 underline">Size Guide</button>
+              </div>
+              <div className="flex flex-wrap gap-3">
+                {["7", "8", "9", "10", "11", "12"].map((size) => (
+                  <button
+                    key={size}
+                    onClick={() => setSelectedSize(size)}
+                    className={`flex h-12 w-12 items-center justify-center rounded-xl border font-bold transition-all ${selectedSize === size ? "border-brand-600 bg-brand-50 text-brand-600" : "border-slate-200 bg-white text-slate-600 hover:border-slate-300"
+                      }`}
+                  >
+                    {size}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <div className="flex flex-wrap items-center gap-4">
               <div className="flex items-center rounded-full border border-slate-200 bg-slate-50 p-1">
                 <button
@@ -91,7 +111,7 @@ export default function ProductDetailsPage() {
 
               <button
                 type="button"
-                onClick={() => addToCart(product, quantity)}
+                onClick={() => addToCart({ ...product, size: selectedSize }, quantity)}
                 className="flex-1 rounded-full bg-slate-950 py-4 font-bold text-white transition-all hover:bg-brand-600 hover:shadow-xl active:scale-95"
               >
                 Add to Cart

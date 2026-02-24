@@ -19,3 +19,8 @@ export async function verifyRazorpayPayment(payload) {
   const { data } = await apiClient.post("/orders/payment/razorpay/verify", payload);
   return data;
 }
+
+export async function updateOrderStatus(orderId, status) {
+  const { data } = await apiClient.patch(`/orders/${orderId}/status`, { status });
+  return data;
+}

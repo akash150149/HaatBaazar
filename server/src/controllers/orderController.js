@@ -4,10 +4,12 @@ import { getRazorpayInstance } from "../config/razorpay.js";
 
 function normalizeOrderItems(items = []) {
   return items.map((item) => ({
-    productId: item.id,
+    productId: item.id || item.productId,
     title: item.title,
     price: Number(item.price),
-    quantity: Number(item.quantity)
+    quantity: Number(item.quantity),
+    size: item.size,
+    color: item.color
   })).filter((item) =>
     item.productId &&
     item.title &&
@@ -61,7 +63,7 @@ async function createPersistedOrder({
     paymentMethod,
     paymentStatus,
     paymentMeta,
-    status: "processing"
+    status: "pending"
   });
 
   return order;
@@ -170,18 +172,28 @@ export async function verifyRazorpayPayment(req, res) {
   return res.status(201).json(serializeOrder(order));
 }
 
+export async function updateOrderStatus(req, res) {
+  const { orderId } = req.params;
+  const { status } = req.body;
+
+  const validStatuses = ["pending", "confirmed", "processing", "shipped", "delivered", "cancelled"];
+  if (!validStatuses.includes(status)) {
+    return res.status(400).json({ message: "Invalid order status" });
+  }
+
+  const order = await Order.findByIdAndUpdate(orderId, { status }, { new: true });
+  if (!order) {
+    return res.status(404).json({ message: "Order not found" });
+  }
+
+  return res.json(serializeOrder(order));
+}
+
 export async function listOrders(req, res) {
   const query = req.user.role === "admin" ? {} : { user: req.user.sub };
   const orders = await Order.find(query).sort({ createdAt: -1 }).populate("user", "name email");
 
-  const normalized = orders.map((orderDoc) => {
-    const order = orderDoc.toJSON();
-    return {
-      ...order,
-      customer: orderDoc.user?.name || orderDoc.user?.email || "Unknown customer",
-      total: order.subtotal
-    };
-  });
+  const normalized = orders.map((orderDoc) => serializeOrder(orderDoc, orderDoc.user?.name || orderDoc.user?.email || "Unknown customer"));
 
   return res.json(normalized);
 }
