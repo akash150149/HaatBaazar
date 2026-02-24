@@ -10,26 +10,35 @@ export default function CategoriesSection({ categories = [] }) {
         <p className="text-slate-500">Find exactly what you're looking for.</p>
       </div>
 
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {categories.map((category) => (
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[250px]">
+        {categories.slice(0, 4).map((category, idx) => (
           <Link
             key={category}
             to={`/products?category=${encodeURIComponent(category)}`}
-            className="group relative overflow-hidden rounded-[2rem] border border-slate-200 bg-white p-8 transition-all hover:-translate-y-2 hover:border-brand-300 hover:shadow-premium"
+            className={`group relative overflow-hidden rounded-[2.5rem] bg-slate-100 transition-all hover:shadow-premium ${idx === 0 ? "md:col-span-2 md:row-span-2" : "md:col-span-2 md:row-span-1"
+              }`}
           >
-            <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-brand-50 transition-all group-hover:scale-150" />
-
-            <div className="relative z-10 space-y-4">
-              <span className="inline-block rounded-full bg-slate-100 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-slate-500">
-                Category
+            {/* Background Flair */}
+            <div className="absolute inset-0 bg-gradient-to-br from-slate-900/10 to-transparent transition-opacity group-hover:opacity-100" />
+            <div className="absolute -bottom-10 -right-10 select-none opacity-10">
+              <span className="font-display text-8xl font-black uppercase tracking-tighter text-slate-950">
+                {category.slice(0, 4)}
               </span>
-              <h3 className="text-2xl font-bold capitalize text-slate-900">{category}</h3>
-              <p className="text-sm leading-relaxed text-slate-500">
-                Explore the latest trends and essential pieces in <span className="font-semibold">{category}</span>.
-              </p>
-              <div className="flex items-center space-x-2 pt-2 text-xs font-bold uppercase tracking-widest text-brand-600">
-                <span>View All</span>
-                <svg className="h-3 w-3 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            </div>
+
+            <div className="absolute inset-0 p-8 flex flex-col justify-end transition-transform group-hover:translate-y-[-10px]">
+              <div className="space-y-2">
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-accent">
+                  Featured Collection
+                </span>
+                <h3 className={`font-display font-black uppercase tracking-tighter text-slate-950 ${idx === 0 ? "text-5xl" : "text-3xl"
+                  }`}>
+                  {category}
+                </h3>
+              </div>
+
+              <div className="mt-4 flex h-10 w-10 items-center justify-center rounded-full bg-slate-950 text-white opacity-0 transition-all group-hover:opacity-100">
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
               </div>

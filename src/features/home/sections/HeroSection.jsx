@@ -3,55 +3,59 @@ import brandConfig from "../../../config/brandConfig";
 
 export default function HeroSection() {
   return (
-    <section className="relative overflow-hidden rounded-[2.5rem] bg-slate-950 px-6 py-16 text-white shadow-premium sm:px-12 sm:py-24 lg:px-20">
-      {/* Background Orbs */}
-      <div className="absolute -right-20 -top-20 h-[30rem] w-[30rem] rounded-full bg-brand-500/20 blur-[120px] animate-pulse" />
-      <div className="absolute -bottom-40 -left-20 h-[25rem] w-[25rem] rounded-full bg-emerald-500/10 blur-[100px]" />
+    <section className="relative min-h-[80vh] overflow-hidden rounded-[3rem] bg-slate-950 px-6 py-20 text-white shadow-premium sm:px-12 lg:px-20 flex items-center">
+      {/* Ghost Text Background */}
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none">
+        <h2 className="text-[25vw] font-black leading-none text-ghost opacity-20 tracking-tighter">
+          SOLE
+        </h2>
+      </div>
 
-      <div className="relative z-10 grid items-center gap-16 lg:grid-cols-[1.2fr_0.8fr]">
-        <div className="max-w-3xl space-y-8 text-center lg:text-left">
-          <div className="inline-flex items-center space-x-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 backdrop-blur-md">
-            <span className="h-2 w-2 animate-ping rounded-full bg-brand-400" />
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-brand-100">
-              Next-Gen Commerce
+      {/* Decorative Elements */}
+      <div className="absolute right-0 top-0 h-[40rem] w-[40rem] rounded-full bg-accent/20 blur-[150px] animate-pulse" />
+      <div className="absolute bottom-0 left-0 h-[30rem] w-[30rem] rounded-full bg-brand-500/10 blur-[120px]" />
+
+      <div className="relative z-10 grid w-full items-center gap-16 lg:grid-cols-2">
+        <div className="space-y-10 reveal-up">
+          <div className="inline-flex items-center space-x-3 rounded-full border border-white/10 bg-white/5 py-2 pl-2 pr-6 backdrop-blur-md">
+            <span className="rounded-full bg-accent px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white">NEW</span>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-brand-100">
+              Spring 2026 Collection
             </span>
           </div>
 
-          <h1 className="font-display text-5xl font-extrabold tracking-tight sm:text-7xl lg:text-8xl lg:leading-[1.1]">
-            Build <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-300 to-emerald-500">Fast.</span> <br />
-            Sell <span className="italic font-light">Global.</span>
+          <h1 className="font-display text-6xl font-black leading-none tracking-tighter sm:text-8xl lg:text-[10rem]">
+            STYLE <br />
+            <span className="text-accent">DEFINED.</span>
           </h1>
 
-          <p className="max-w-xl text-lg leading-relaxed text-slate-300 sm:text-xl mx-auto lg:mx-0">
-            {brandConfig.name} provides the high-performance foundation your brand needs to scale without limits. Experience the peak of modern storefronts.
-          </p>
+          <div className="max-w-md space-y-8">
+            <p className="text-lg leading-relaxed text-slate-400">
+              High-performance footwear engineered for the bold. {brandConfig.name} brings you the next evolution in street aesthetic.
+            </p>
 
-          <div className="flex flex-col flex-wrap justify-center gap-4 sm:flex-row lg:justify-start">
-            <Link to="/products" className="group relative overflow-hidden rounded-full bg-brand-500 px-10 py-4 font-bold text-white transition-all hover:bg-brand-400 hover:shadow-xl hover:shadow-brand-500/20 active:scale-95">
-              <span className="relative z-10">Shop Collection</span>
-            </Link>
-            <Link to="/admin" className="rounded-full border border-white/20 bg-white/5 px-10 py-4 font-bold text-white backdrop-blur-md transition-all hover:bg-white/10 active:scale-95">
-              Admin Portal
-            </Link>
+            <div className="flex flex-col gap-4 sm:flex-row">
+              <Link to="/products" className="group flex items-center justify-center space-x-3 rounded-full bg-accent px-10 py-5 font-black uppercase tracking-widest text-white transition-all hover:bg-accent-dark hover:shadow-glow active:scale-95">
+                <span>Shop Now</span>
+                <svg className="h-5 w-5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
+              <Link to="/admin" className="flex items-center justify-center rounded-full border border-white/20 bg-white/5 px-10 py-5 font-black uppercase tracking-widest text-white backdrop-blur-md transition-all hover:bg-white/10 active:scale-95">
+                Vault
+              </Link>
+            </div>
           </div>
         </div>
 
-        <div className="hidden grid-cols-1 gap-4 lg:grid">
-          <div className="space-y-4">
-            {[
-              { label: "Category Ready", value: "Any Industry", color: "from-brand-500 to-emerald-400" },
-              { label: "Performance", value: "99+ Lighthouse", color: "from-emerald-400 to-cyan-400" },
-              { label: "Backend Ready", value: "Node + MongoDB", color: "from-cyan-400 to-brand-500" }
-            ].map((feature, i) => (
-              <article key={i} className="group flex flex-col justify-center rounded-3xl border border-white/10 bg-white/5 p-8 backdrop-blur-xl transition-all hover:bg-white/10">
-                <p className="text-xs font-black uppercase tracking-widest text-brand-200/60 transition-colors group-hover:text-brand-200">
-                  {feature.label}
-                </p>
-                <p className={`mt-1 text-3xl font-bold bg-gradient-to-r ${feature.color} bg-clip-text text-transparent`}>
-                  {feature.value}
-                </p>
-              </article>
-            ))}
+        <div className="relative hidden lg:block">
+          <div className="absolute -left-10 top-20 h-32 w-32 rounded-3xl bg-accent p-6 shadow-glow transition-transform hover:scale-110 rotate-12">
+            <p className="text-xs font-black uppercase leading-tight text-white">Premium Quality</p>
+          </div>
+          <div className="aspect-[4/5] rounded-[2.5rem] border border-white/10 bg-white/5 backdrop-blur-sm overflow-hidden p-8 flex items-center justify-center">
+            <div className="h-full w-full rounded-[2rem] bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center overflow-hidden">
+              <p className="text-ghost text-4xl font-black rotate-[-45deg] opacity-40">SOLESYSTEM</p>
+            </div>
           </div>
         </div>
       </div>
