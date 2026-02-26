@@ -49,13 +49,23 @@ export default function HeroSection() {
         </div>
 
         <div className="relative hidden lg:block">
-          <div className="absolute -left-10 top-20 h-32 w-32 rounded-3xl bg-accent p-6 shadow-glow transition-transform hover:scale-110 rotate-12">
+          <div className="absolute -left-10 top-20 z-20 h-32 w-32 rounded-3xl bg-accent p-6 shadow-glow transition-transform hover:scale-110 rotate-12">
             <p className="text-xs font-black uppercase leading-tight text-white">Premium Quality</p>
           </div>
-          <div className="aspect-[4/5] rounded-[2.5rem] border border-white/10 bg-white/5 backdrop-blur-sm overflow-hidden p-8 flex items-center justify-center">
-            <div className="h-full w-full rounded-[2rem] bg-gradient-to-br from-slate-900 to-slate-800 flex items-center justify-center overflow-hidden">
-              <p className="text-ghost text-4xl font-black rotate-[-45deg] opacity-40">SOLESYSTEM</p>
+          <div className="group relative aspect-[4/5] overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/5 p-8 backdrop-blur-sm transition-all hover:bg-white/10">
+            <div className="absolute inset-0 flex items-center justify-center opacity-40">
+              <p className="text-ghost text-6xl font-black rotate-[-45deg]">SOLESYSTEM</p>
             </div>
+            <div className="relative z-10 flex h-full w-full items-center justify-center">
+              <img 
+                src="/images/hero-shoe.png" 
+                alt="Premium Streetwear Sneaker" 
+                className="h-auto w-[120%] max-w-none -rotate-12 transition-all duration-700 group-hover:scale-110 group-hover:rotate-0 drop-shadow-[0_20px_50px_rgba(255,87,34,0.3)]"
+              />
+            </div>
+            
+            {/* Reflective shine effect on hover */}
+            <div className="absolute inset-0 z-20 translate-x-[-100%] bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-1000 group-hover:translate-x-[100%]" />
           </div>
         </div>
       </div>
