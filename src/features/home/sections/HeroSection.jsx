@@ -1,37 +1,89 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import brandConfig from "../../../config/brandConfig";
 
+const SLIDER_PRODUCTS = [
+  {
+    id: 1,
+    title: "Timeless",
+    subtitle: "Comfort.",
+    description: "Upgrade your everyday style with these classic brown casual sneakers designed for comfort and durability.",
+    tag: "Classic Brown",
+    image: "/images/shoes/brown-casual.png",
+    color: "bg-orange-500/15"
+  },
+  {
+    id: 2,
+    title: "Urban",
+    subtitle: "Boldness.",
+    description: "Make a bold style statement with these modern chunky sneakers featuring a beige and green color combination.",
+    tag: "Chunky Aesthetic",
+    image: "/images/shoes/beige-green-chunky.png",
+    color: "bg-emerald-500/15"
+  },
+  {
+    id: 3,
+    title: "Vibrant",
+    subtitle: "Energy.",
+    description: "Add a fresh pop of color to your wardrobe with these yellow and white casual sneakers featuring breathable mesh.",
+    tag: "Pop of Color",
+    image: "/images/shoes/yellow-white-casual.png",
+    color: "bg-yellow-500/15"
+  },
+  {
+    id: 4,
+    title: "Sleek",
+    subtitle: "Versatile.",
+    description: "Keep it sleek and minimalist with these black low-top casual shoes. Ideal for office casuals and evening outings.",
+    tag: "Minimalist Edge",
+    image: "/images/shoes/black-low-top.png",
+    color: "bg-blue-500/15"
+  }
+];
+
 export default function HeroSection() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % SLIDER_PRODUCTS.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const product = SLIDER_PRODUCTS[currentSlide];
+
   return (
-    <section className="relative min-h-[80vh] overflow-hidden rounded-[3rem] bg-slate-950 px-6 py-20 text-white shadow-premium sm:px-12 lg:px-20 flex items-center">
+    <section className="relative min-h-[85vh] overflow-hidden rounded-[3rem] bg-slate-950 px-6 py-20 text-white shadow-premium sm:px-12 lg:px-20 flex items-center transition-colors duration-1000">
       {/* Ghost Text Background */}
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none">
-        <h2 className="text-[25vw] font-black leading-none text-ghost opacity-20 tracking-tighter">
-          SOLE
+        <h2 className="text-[25vw] font-black leading-none text-ghost opacity-20 tracking-tighter uppercase">
+          {product.title}
         </h2>
       </div>
 
-      {/* Decorative Elements */}
-      <div className="absolute right-0 top-0 h-[40rem] w-[40rem] rounded-full bg-accent/20 blur-[150px] animate-pulse" />
-      <div className="absolute bottom-0 left-0 h-[30rem] w-[30rem] rounded-full bg-brand-500/10 blur-[120px]" />
+      {/* Decorative Glow Elements */}
+      <div className="absolute right-[-10%] top-[-10%] h-[50rem] w-[50rem] rounded-full bg-accent/20 blur-[180px] animate-pulse transition-all duration-1000" />
+      <div className={`absolute bottom-[-5%] left-[-5%] h-[40rem] w-[40rem] rounded-full blur-[150px] transition-all duration-1000 ${product.color}`} />
+      <div className="absolute top-1/4 left-1/2 h-[30rem] w-[30rem] rounded-full bg-blue-500/5 blur-[120px]" />
 
-      <div className="relative z-10 grid w-full items-center gap-16 lg:grid-cols-2">
+      <div className="relative z-10 grid w-full items-center gap-16 lg:grid-cols-2 lg:gap-24">
         <div className="space-y-10 reveal-up">
           <div className="inline-flex items-center space-x-3 rounded-full border border-white/10 bg-white/5 py-2 pl-2 pr-6 backdrop-blur-md">
-            <span className="rounded-full bg-accent px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white">NEW</span>
-            <span className="text-[10px] font-bold uppercase tracking-widest text-brand-100">
-              Spring 2026 Collection
+            <span className="rounded-full bg-accent px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white">TRENDING</span>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-brand-100 transition-opacity duration-500">
+              {product.tag}
             </span>
           </div>
 
-          <h1 className="font-display text-6xl font-black leading-none tracking-tighter sm:text-8xl lg:text-[10rem]">
-            STYLE <br />
-            <span className="text-accent">DEFINED.</span>
+          <h1 className="font-display text-6xl font-black leading-none tracking-tighter sm:text-8xl lg:text-[10rem] transition-all duration-500">
+            {product.title} <br />
+            <span className="text-accent">{product.subtitle}</span>
           </h1>
 
           <div className="max-w-md space-y-8">
-            <p className="text-lg leading-relaxed text-slate-400">
-              High-performance footwear engineered for the bold. {brandConfig.name} brings you the next evolution in street aesthetic.
+            <p className="text-lg leading-relaxed text-slate-400 min-h-[5rem] transition-opacity duration-500">
+              {product.description}
             </p>
 
             <div className="flex flex-col gap-4 sm:flex-row">
@@ -54,16 +106,17 @@ export default function HeroSection() {
           </div>
           <div className="group relative aspect-[4/5] overflow-hidden rounded-[2.5rem] border border-white/10 bg-white/5 p-8 backdrop-blur-sm transition-all hover:bg-white/10">
             <div className="absolute inset-0 flex items-center justify-center opacity-40">
-              <p className="text-ghost text-6xl font-black rotate-[-45deg]">SOLESYSTEM</p>
+              <p className="text-ghost text-6xl font-black rotate-[-45deg] transition-opacity duration-1000">SOLESYSTEM</p>
             </div>
-            <div className="relative z-10 flex h-full w-full items-center justify-center">
-              <img 
-                src="/images/hero-shoe.png" 
-                alt="Premium Streetwear Sneaker" 
-                className="h-auto w-[120%] max-w-none -rotate-12 transition-all duration-700 group-hover:scale-110 group-hover:rotate-0 drop-shadow-[0_20px_50px_rgba(255,87,34,0.3)]"
+            <div className="relative z-10 flex h-full w-full items-center justify-center overflow-visible">
+              <img
+                key={product.image}
+                src={product.image}
+                alt={product.title}
+                className="h-auto w-[90%] max-w-none -rotate-6 transition-all duration-700 hover:scale-110 hover:rotate-0 drop-shadow-[0_20px_60px_rgba(255,87,34,0.4)] animate-in fade-in zoom-in duration-1000"
               />
             </div>
-            
+
             {/* Reflective shine effect on hover */}
             <div className="absolute inset-0 z-20 translate-x-[-100%] bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-1000 group-hover:translate-x-[100%]" />
           </div>

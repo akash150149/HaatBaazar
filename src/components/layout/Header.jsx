@@ -60,7 +60,7 @@ export default function Header() {
               <NavLink to="/my-orders" className={linkClass}>
                 Orders
               </NavLink>
-              <span className="max-w-40 truncate text-xs text-slate-500">{user?.email}</span>
+              <span className="max-w-40 truncate text-xs font-semibold text-brand-600">Hi, {user?.name}</span>
               <button
                 type="button"
                 onClick={() => {
@@ -103,7 +103,7 @@ export default function Header() {
                 <NavLink to="/my-orders" className={linkClass} onClick={closeMenu}>
                   My Orders
                 </NavLink>
-                <p className="text-xs font-medium text-slate-500">{user?.email}</p>
+                <p className="text-xs font-semibold text-brand-600">Hi, {user?.name}</p>
                 <button
                   type="button"
                   onClick={() => {

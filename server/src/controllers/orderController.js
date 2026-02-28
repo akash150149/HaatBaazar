@@ -1,6 +1,9 @@
 import Order from "../models/Order.js";
+import Product from "../models/Product.js";
+import mongoose from "mongoose";
 import crypto from "crypto";
 import { getRazorpayInstance } from "../config/razorpay.js";
+import { sendReceiptEmail } from "../utils/email.js";
 
 function normalizeOrderItems(items = []) {
   return items.map((item) => ({
@@ -36,9 +39,26 @@ async function createPersistedOrder({
   shippingAddress,
   paymentMethod,
   paymentStatus,
-  paymentMeta = {}
+  paymentMeta = {},
+  transactionId = null
 }) {
   const normalizedItems = normalizeOrderItems(items);
+
+  // Stock Validation
+  for (const item of normalizedItems) {
+    const product = await Product.findById(item.productId);
+    if (!product) {
+      const err = new Error(`Product ${item.title} not found`);
+      err.statusCode = 404;
+      throw err;
+    }
+    if (product.stock < item.quantity) {
+      const err = new Error(`Insufficient stock for product ${item.title}. Available: ${product.stock}`);
+      err.statusCode = 400;
+      throw err;
+    }
+  }
+
   const itemsCount = normalizedItems.reduce((count, item) => count + item.quantity, 0);
   const safeSubtotal = Number(subtotal || 0);
 
@@ -55,7 +75,7 @@ async function createPersistedOrder({
 
   const order = await Order.create({
     orderId: `ORD-${Date.now()}`,
-    user: userId,
+    user: new mongoose.Types.ObjectId(userId),
     items: normalizedItems,
     itemsCount,
     subtotal: safeSubtotal,
@@ -63,8 +83,16 @@ async function createPersistedOrder({
     paymentMethod,
     paymentStatus,
     paymentMeta,
+    transactionId,
     status: "pending"
   });
+
+  // Stock Decrement
+  for (const item of normalizedItems) {
+    await Product.findByIdAndUpdate(item.productId, {
+      $inc: { stock: -item.quantity }
+    });
+  }
 
   return order;
 }
@@ -90,6 +118,9 @@ export async function createOrder(req, res) {
     paymentMethod: "cod",
     paymentStatus: "pending"
   });
+
+  // Send Receipt Email
+  await sendReceiptEmail(req.user.email, order);
 
   return res.status(201).json(serializeOrder(order));
 }
@@ -166,8 +197,12 @@ export async function verifyRazorpayPayment(req, res) {
       razorpay_order_id,
       razorpay_payment_id,
       razorpay_signature
-    }
+    },
+    transactionId: razorpay_payment_id
   });
+
+  // Send Receipt Email
+  await sendReceiptEmail(req.user.email, order);
 
   return res.status(201).json(serializeOrder(order));
 }
@@ -193,7 +228,12 @@ export async function listOrders(req, res) {
   const query = req.user.role === "admin" ? {} : { user: req.user.sub };
   const orders = await Order.find(query).sort({ createdAt: -1 }).populate("user", "name email");
 
-  const normalized = orders.map((orderDoc) => serializeOrder(orderDoc, orderDoc.user?.name || orderDoc.user?.email || "Unknown customer"));
+  const normalized = orders.map((orderDoc) => {
+    const customerName = orderDoc.user?.name ||
+      orderDoc.user?.email ||
+      (orderDoc.user ? String(orderDoc.user) : "Unknown customer");
+    return serializeOrder(orderDoc, customerName);
+  });
 
   return res.json(normalized);
 }
