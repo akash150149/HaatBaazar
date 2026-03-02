@@ -1,10 +1,49 @@
+import { OAuth2Client } from "google-auth-library";
 import User from "../models/User.js";
 import { generateToken } from "../utils/generateToken.js";
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 function buildAuthResponse(user) {
   const safeUser = user.toJSON();
   const token = generateToken(user);
   return { user: safeUser, token };
+}
+
+export async function googleLogin(req, res) {
+  const { token } = req.body;
+
+  if (!token) {
+    return res.status(400).json({ message: "Google token is required" });
+  }
+
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    const payload = ticket.getPayload();
+    const { email, name, picture, sub: googleId } = payload;
+
+    let user = await User.findOne({ email: email.toLowerCase() });
+
+    if (!user) {
+      // Create a random password for Google-only users
+      const randomPassword = Math.random().toString(36).slice(-10);
+      user = await User.create({
+        name,
+        email: email.toLowerCase(),
+        password: randomPassword,
+        role: "user",
+        // You might want to add a field like `isGoogleUser: true` or `avatar: picture`
+      });
+    }
+
+    return res.json(buildAuthResponse(user));
+  } catch (error) {
+    console.error("Google Auth Error:", error);
+    return res.status(401).json({ message: "Invalid Google token" });
+  }
 }
 
 export async function register(req, res) {

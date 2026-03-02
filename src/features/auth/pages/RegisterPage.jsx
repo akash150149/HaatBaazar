@@ -1,11 +1,10 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { GoogleLogin } from "@react-oauth/google";
 import SeoHelmet from "../../../seo/SeoHelmet";
 import { isEmail } from "../../../utils/validators";
 import { useAuth } from "../../../context";
 
 export default function RegisterPage() {
-  const { register } = useAuth();
+  const { register, googleLogin } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({
     name: "",
@@ -50,10 +49,19 @@ export default function RegisterPage() {
     }
   };
 
+  const handleGoogleSuccess = async (response) => {
+    try {
+      await googleLogin(response.credential);
+      navigate("/", { replace: true });
+    } catch (err) {
+      setError(err?.response?.data?.message || "Google registration failed.");
+    }
+  };
+
   return (
     <section className="mx-auto max-w-md space-y-4 rounded-lg border border-slate-200 bg-white p-6">
       <SeoHelmet title="Register" />
-      <h1 className="text-2xl font-semibold">Register</h1>
+      <h1 className="text-2xl font-semibold text-center">Register</h1>
       <form onSubmit={onSubmit} className="space-y-3">
         <input
           type="text"
@@ -89,7 +97,23 @@ export default function RegisterPage() {
           Create account
         </button>
       </form>
-      <Link to="/auth/login" className="text-brand-700">Back to login</Link>
+
+      <div className="relative my-4">
+        <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-slate-300"></span></div>
+        <div className="relative flex justify-center text-xs uppercase"><span className="bg-white px-2 text-slate-500">Or continue with</span></div>
+      </div>
+
+      <div className="flex justify-center">
+        <GoogleLogin
+          onSuccess={handleGoogleSuccess}
+          onError={() => setError("Google Login failed.")}
+          useOneTap
+        />
+      </div>
+
+      <div className="text-center mt-4">
+        <Link to="/auth/login" className="text-brand-700 text-sm">Back to login</Link>
+      </div>
     </section>
   );
 }

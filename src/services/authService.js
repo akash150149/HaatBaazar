@@ -9,3 +9,8 @@ export async function register(payload) {
   const { data } = await apiClient.post("/auth/register", payload);
   return data;
 }
+
+export async function googleLogin(token) {
+  const { data } = await apiClient.post("/auth/google", { token });
+  return data;
+}

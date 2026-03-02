@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo, useState } from "react";
 import { STORAGE_KEYS } from "../utils/constants";
-import { login as loginService, register as registerService } from "../services/authService";
+import { login as loginService, register as registerService, googleLogin as googleLoginService } from "../services/authService";
 
 const AuthContext = createContext(null);
 
@@ -36,6 +36,11 @@ export function AuthProvider({ children }) {
     return persistAuth(authPayload);
   };
 
+  const googleLogin = async (token) => {
+    const authPayload = await googleLoginService(token);
+    return persistAuth(authPayload);
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem(STORAGE_KEYS.AUTH);
@@ -48,6 +53,7 @@ export function AuthProvider({ children }) {
       isAdmin: user?.role === "admin",
       login,
       register,
+      googleLogin,
       logout
     }),
     [user]
