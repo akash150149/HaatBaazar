@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Link } from "react-router-dom";
 import brandConfig from "../../../config/brandConfig";
 
@@ -43,13 +43,31 @@ const SLIDER_PRODUCTS = [
 
 export default function HeroSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const timerRef = useRef(null);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
+  const startTimer = useCallback(() => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % SLIDER_PRODUCTS.length);
     }, 3000);
-    return () => clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    startTimer();
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [startTimer]);
+
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % SLIDER_PRODUCTS.length);
+    startTimer();
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + SLIDER_PRODUCTS.length) % SLIDER_PRODUCTS.length);
+    startTimer();
+  };
 
   const product = SLIDER_PRODUCTS[currentSlide];
 
@@ -66,6 +84,30 @@ export default function HeroSection() {
       <div className="absolute right-[-10%] top-[-10%] h-[50rem] w-[50rem] rounded-full bg-accent/20 blur-[180px] animate-pulse transition-all duration-1000" />
       <div className={`absolute bottom-[-5%] left-[-5%] h-[40rem] w-[40rem] rounded-full blur-[150px] transition-all duration-1000 ${product.color}`} />
       <div className="absolute top-1/4 left-1/2 h-[30rem] w-[30rem] rounded-full bg-blue-500/5 blur-[120px]" />
+
+      {/* Navigation Arrows */}
+      <div className="absolute left-4 top-1/2 z-30 -translate-y-1/2 sm:left-8 lg:left-12">
+        <button
+          onClick={prevSlide}
+          className="group flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/5 backdrop-blur-md transition-all hover:bg-accent hover:border-accent hover:shadow-glow active:scale-90"
+          aria-label="Previous slide"
+        >
+          <svg className="h-6 w-6 transition-transform group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+      </div>
+      <div className="absolute right-4 top-1/2 z-30 -translate-y-1/2 sm:right-8 lg:right-12">
+        <button
+          onClick={nextSlide}
+          className="group flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/5 backdrop-blur-md transition-all hover:bg-accent hover:border-accent hover:shadow-glow active:scale-90"
+          aria-label="Next slide"
+        >
+          <svg className="h-6 w-6 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
 
       <div className="relative z-10 grid w-full items-center gap-16 lg:grid-cols-2 lg:gap-24">
         <div className="space-y-10 reveal-up">
@@ -122,6 +164,22 @@ export default function HeroSection() {
           </div>
         </div>
       </div>
+      <SlideIndicators current={currentSlide} length={SLIDER_PRODUCTS.length} onSelect={(idx) => { setCurrentSlide(idx); startTimer(); }} />
     </section>
   );
 }
+
+{/* Slide Indicators Helper Component */ }
+const SlideIndicators = ({ current, length, onSelect }) => (
+  <div className="absolute bottom-10 left-1/2 flex -translate-x-1/2 gap-3 z-30">
+    {Array.from({ length }).map((_, idx) => (
+      <button
+        key={idx}
+        onClick={() => onSelect(idx)}
+        className={`h-1.5 transition-all duration-500 rounded-full ${current === idx ? "w-10 bg-accent shadow-glow" : "w-4 bg-white/20 hover:bg-white/40"
+          }`}
+        aria-label={`Go to slide ${idx + 1}`}
+      />
+    ))}
+  </div>
+);
